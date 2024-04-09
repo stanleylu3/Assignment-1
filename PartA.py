@@ -5,14 +5,12 @@ def tokenize(TextFilePath) -> list:
         with open(TextFilePath, 'r') as file:
             for line in file:
                 words = line.split()
-                #adds the words if they are unique and alphanumeric
+                #adds the words if they are alphanumeric
                 for word in words:
                     #strips non-alphanumeric characters from words
-                    result = ''.join(filter(str.isalnum, word)).lower()
-                    if result not in tokenList:
+                    result = ''.join(char for char in word if char.isalnum() and char.isascii())
+                    if result:
                         tokenList.append(result)
-                    else:
-                        continue
             return tokenList
     except FileNotFoundError:
         print("File not found")
