@@ -2,7 +2,7 @@ def tokenize(TextFilePath) -> list:
     tokenList = []
     #attempts to open a file with the given filepath
     try:
-        with open(TextFilePath, 'r') as file:
+        with open(TextFilePath, 'r', encoding = 'utf-8') as file:
             for line in file:
                 words = line.split()
                 #adds the words if they are alphanumeric
@@ -31,8 +31,14 @@ def computeWordFrequencies(tokenList) -> dict:
     return frequencies
 
 def printFrequencies(wordCount):
-    pass
+    sorted_dict = sorted(wordCount.items(), key = lambda x: (-x[1], x[0]))
+    for word, freq in sorted_dict:
+        print(f"{word} -> {freq}")
+
 
 if __name__ == '__main__':
-    pass
+    filePath = input("Enter File Path: ")
+    tokens = tokenize(filePath)
+    freqCount = computeWordFrequencies(tokens)
+    printFrequencies(freqCount)
 
