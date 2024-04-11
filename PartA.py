@@ -1,4 +1,5 @@
-def tokenize(TextFilePath) -> list:
+import sys
+def tokenize(TextFilePath: str) -> list:
     tokenList = []
     #attempts to open a file with the given filepath
     try:
@@ -10,14 +11,16 @@ def tokenize(TextFilePath) -> list:
                     #strips non-alphanumeric characters from words
                     result = ''.join(char for char in word if char.isalnum() and char.isascii())
                     if result:
-                        tokenList.append(result)
+                        tokenList.append(result.lower())
 
             return tokenList
 
     except FileNotFoundError:
         print("File not found")
+    except OSError as e:
+        print(f"OS error: {e}")
 
-def computeWordFrequencies(tokenList) -> dict:
+def computeWordFrequencies(tokenList: list) -> dict:
     frequencies = {}
     #runs through all the tokens in the given list
     for token in tokenList:
@@ -30,14 +33,15 @@ def computeWordFrequencies(tokenList) -> dict:
 
     return frequencies
 
-def printFrequencies(wordCount):
+def printFrequencies(wordCount: dict):
+    #sorts the dictionary based on the highest frequency word
     sorted_dict = sorted(wordCount.items(), key = lambda x: (-x[1], x[0]))
     for word, freq in sorted_dict:
         print(f"{word} -> {freq}")
 
 
 if __name__ == '__main__':
-    filePath = input("Enter File Path: ")
+    filePath = sys.argv[1]
     tokens = tokenize(filePath)
     freqCount = computeWordFrequencies(tokens)
     printFrequencies(freqCount)
